@@ -2,91 +2,23 @@
 
 import { motion } from "framer-motion"
 import { CheckCircle2, Sparkles, Play } from "lucide-react"
-import { useRef, useState, useEffect } from "react"
+import { useState } from "react"
 
 export function TrustHighlights() {
 
-  const videoRef = useRef<HTMLVideoElement | null>(null)
-  const sectionRef = useRef<HTMLDivElement | null>(null)
-
   const [playing, setPlaying] = useState(false)
-
-  const playVideo = () => {
-    if (videoRef.current) {
-      videoRef.current.play()
-      setPlaying(true)
-    }
-  }
-
-  /* Pause video when tab inactive */
-  useEffect(() => {
-
-    const handleVisibility = () => {
-      if (!videoRef.current) return
-
-      if (document.hidden) {
-        videoRef.current.pause()
-      } else {
-        if (playing) {
-          videoRef.current.play()
-        }
-      }
-    }
-
-    document.addEventListener("visibilitychange", handleVisibility)
-
-    return () => {
-      document.removeEventListener("visibilitychange", handleVisibility)
-    }
-
-  }, [playing])
-
-
-  /* Pause video when scrolled away */
-  useEffect(() => {
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-
-        if (!videoRef.current) return
-
-        if (!entry.isIntersecting) {
-          videoRef.current.pause()
-        }
-
-      },
-      { threshold: 0.3 }
-    )
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
-    return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current)
-      }
-    }
-
-  }, [])
-
 
   return (
 
-    <section
-      ref={sectionRef}
-      className="py-20 sm:py-28 bg-background relative overflow-hidden"
-    >
+    <section className="py-20 sm:py-28 bg-background relative overflow-hidden">
 
-      {/* Decorative Background */}
+      {/* Background Decorations */}
 
       <div className="absolute top-0 left-0 w-72 h-72 bg-accent/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
 
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2" />
 
-
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-
 
         {/* Header */}
 
@@ -108,17 +40,14 @@ export function TrustHighlights() {
           </h2>
 
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-            The Divine Farms combines nature, luxury amenities and strong
-            investment potential.
+            The Divine Farms combines nature, luxury amenities and strong investment potential.
           </p>
 
         </motion.div>
 
-
         {/* Media Section */}
 
         <div className="grid lg:grid-cols-2 gap-10 mb-20">
-
 
           {/* VIDEO */}
 
@@ -130,43 +59,52 @@ export function TrustHighlights() {
             className="relative rounded-2xl overflow-hidden shadow-2xl border border-border"
           >
 
-            <video
-              ref={videoRef}
-              src="https://youtu.be/8B3hRUk3qiM?si=DGJyr00PEzjDkCIy"
-              poster="/divine-farms-hero.jpg"
-              className="w-full h-full object-cover"
-              controls={playing}
-              preload="metadata"
-              playsInline
-              disablePictureInPicture
-            />
+            <div className="aspect-video relative">
 
-            {!playing && (
+              {!playing && (
 
-              <div
-                onClick={playVideo}
-                className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 cursor-pointer"
-              >
-
-                <motion.div
-                  whileHover={{ scale: 1.1 }}
-                  animate={{ scale: [1, 1.08, 1] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                  className="w-20 h-20 bg-accent rounded-full flex items-center justify-center shadow-lg"
+                <div
+                  onClick={() => setPlaying(true)}
+                  className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 cursor-pointer z-10"
                 >
-                  <Play size={34} className="text-accent-foreground ml-1" />
-                </motion.div>
 
-                <p className="text-white font-serif font-bold mt-4 text-lg">
-                  Watch Project Overview
-                </p>
+                  <motion.div
+                    whileHover={{ scale: 1.1 }}
+                    animate={{ scale: [1, 1.08, 1] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                    className="w-20 h-20 bg-accent rounded-full flex items-center justify-center shadow-lg"
+                  >
+                    <Play size={34} className="text-accent-foreground ml-1" />
+                  </motion.div>
 
-              </div>
+                  <p className="text-white font-serif font-bold mt-4 text-lg">
+                    Watch Project Overview
+                  </p>
 
-            )}
+                </div>
+
+              )}
+
+              {playing && (
+
+                <iframe
+                  className="w-full h-full"
+                  src="https://www.youtube.com/embed/8B3hRUk3qiM?autoplay=1"
+                  title="Divine Farms Project Video"
+                  allow="autoplay; encrypted-media"
+                  allowFullScreen
+                />
+
+              )}
+
+              <img
+                src="/divine-farms-hero.jpg"
+                className={`absolute inset-0 w-full h-full object-cover ${playing ? "hidden" : ""}`}
+              />
+
+            </div>
 
           </motion.div>
-
 
           {/* Right Grid */}
 
@@ -210,7 +148,6 @@ export function TrustHighlights() {
           </div>
 
         </div>
-
 
         {/* Trust Stats */}
 
