@@ -132,7 +132,7 @@ export function TrustHighlights() {
 
             <video
               ref={videoRef}
-              src="/divinefarmvideo.mp4"
+              src="https://youtu.be/8B3hRUk3qiM?si=DGJyr00PEzjDkCIy"
               poster="/divine-farms-hero.jpg"
               className="w-full h-full object-cover"
               controls={playing}
