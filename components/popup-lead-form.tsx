@@ -33,7 +33,7 @@ export function PopupLeadForm() {
 
     const timer = setTimeout(() => {
       setIsOpen(true)
-    }, 10000) // change to 30000 later
+    }, 50000) // change to 30000 later
 
     return () => clearTimeout(timer)
 
